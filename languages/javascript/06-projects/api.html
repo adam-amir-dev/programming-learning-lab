@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>project:weather-app</title>
+</head>
+
+<body>
+  <header>
+    <h1>Weather App</h1>
+  </header>
+  <main>
+    <div class="messageSection">
+      <p id="errorMessage"></p>
+    </div>
+    <div class="inputSection">
+      <!--Tab to edit-->
+      <input type="text" id="userInput" placeholder="Enter city"><br>
+      <button id="submitButton">Search</button>
+    </div>
+    <div id="displaySection">
+      <p id="displayCity"></p>
+      <p id="displayCountry"></p>
+      <p id="displayLatitude"></p>
+      <p id="displayLongtitude"></p>
+      <p id="displayError"></p>
+    </div>
+
+  </main>
+  
+</body>
+<style>
+  header{
+    display: flex;
+    justify-content: center;
+  }
+  .inputSection{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  input{
+    height: 30px;
+    width: 200px;
+  }
+  button{
+    background: black;
+    color: whitesmoke;
+    font-size: 1em;
+    padding: 10px 20px;
+    border-radius: 20px;
+  }
+  .messageSection{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  #displaySection{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  #displaySection p{
+    color: gray;
+    font-size: 1.1em;
+  }
+</style>
+
+<script>
+  
+  const userInput = document.querySelector("#userInput");
+  const submitButton = document.querySelector("#submitButton");
+  const errorMessage = document.querySelector("#errorMessage");
+  const displayCity = document.querySelector("#displayCity");
+  const displayCountry = document.querySelector("#displayCountry");
+  const displayLatitude = document.querySelector("#displayLatitude");
+  const displayLongtitude = document.querySelector("#displayLongtitude");
+  const displayError = document.querySelector("#displayError");
+  
+  
+  submitButton.addEventListener("click",  ()=>{
+    
+    const inputCity = userInput.value.trim()
+    
+    if(inputCity === ""){
+      errorMessage.textContent="Input is empty"
+      errorMessage.style.color = "red"
+      return;
+    }
+    
+    geographical(inputCity);
+    
+    
+  })
+  
+  async function geographical(inputCity) {
+    const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(inputCity)}&count=1`;      
+      errorMessage.textContent = "Loading....."  
+      errorMessage.style.color = "black"
+      try{
+        const response = await fetch(url);
+
+        if(!response.ok){
+          throw new Error(error,`Error loading api : status:${response.status}, ${response.ok}`);
+        }
+
+        const data = await response.json();
+        
+        errorMessage.textContent = "success!"
+        errorMessage.style.color = "green"
+
+        const cityName = data.results[0].name;
+        const country = data.results[0].country;
+        const latitude = data.results[0].latitude;
+        const longitude = data.results[0].longitude;
+
+        displayCity.textContent = `City: ${cityName}`
+        displayCountry.textContent = `Country: ${country}`
+        displayLatitude.textContent = `Latitute: ${latitude}`
+        displayLongtitude.textContent = `Longtitude: ${longitude}`
+      }
+      catch(error){
+        console.log(error,"Error")
+        errorMessage.textContent = "Failed!"
+        errorMessage.style.color = "red"
+
+        displayError.textContent = `Error: ${error.message}`
+      }
+
+  }
+  
+  
+</script>
+
+</html>
