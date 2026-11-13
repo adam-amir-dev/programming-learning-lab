@@ -102,14 +102,25 @@
     const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(inputCity)}&count=1`;      
       errorMessage.textContent = "Loading....."  
       errorMessage.style.color = "black"
+
+      displayCity.textContent = "";
+      displayCountry.textContent = "";
+      displayLatitude.textContent = "";
+      displayLongtitude.textContent = "";
+      displayError.textContent = "";
+
       try{
         const response = await fetch(url);
 
-        if(!response.ok){
-          throw new Error(error,`Error loading api : status:${response.status}, ${response.ok}`);
-        }
+        if (!response.ok) {
+          throw new Error(`HTTP Error: ${response.status}`);
+        }   
 
         const data = await response.json();
+
+        if (!data.results || data.results.length === 0) {
+          throw new Error("City not found");
+        }
         
         errorMessage.textContent = "success!"
         errorMessage.style.color = "green"
@@ -123,6 +134,10 @@
         displayCountry.textContent = `Country: ${country}`
         displayLatitude.textContent = `Latitute: ${latitude}`
         displayLongtitude.textContent = `Longtitude: ${longitude}`
+
+        userInput.value = "";
+
+
       }
       catch(error){
         console.log(error,"Error")
