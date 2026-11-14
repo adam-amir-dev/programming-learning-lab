@@ -26,6 +26,10 @@
       <p id="displayLatitude"></p>
       <p id="displayLongtitude"></p>
       <p id="displayError"></p>
+      <p id="displayTemperature"></p>
+      <p id="displayHumidity"></p>
+      <p id="displayWindSpeed"></p>
+      <p id="displayWeather"></p>
     </div>
 
   </main>
@@ -81,7 +85,10 @@
   const displayLatitude = document.querySelector("#displayLatitude");
   const displayLongtitude = document.querySelector("#displayLongtitude");
   const displayError = document.querySelector("#displayError");
-  
+  const displayTemperature = document.querySelector("#displayTemperature");
+  const displayHumidity = document.querySelector("#displayHumidity");
+  const displayWindSpeed = document.querySelector("#displayWindSpeed");
+  const displayWeather = document.querySelector("#displayWeather");
   
   submitButton.addEventListener("click",  ()=>{
     
@@ -122,8 +129,6 @@
           throw new Error("City not found");
         }
         
-        errorMessage.textContent = "success!"
-        errorMessage.style.color = "green"
 
         const cityName = data.results[0].name;
         const country = data.results[0].country;
@@ -137,6 +142,7 @@
 
         userInput.value = "";
 
+        await forCast(latitude, longitude);
 
       }
       catch(error){
@@ -144,10 +150,100 @@
         errorMessage.textContent = "Failed!"
         errorMessage.style.color = "red"
 
-        displayError.textContent = `Error: ${error.message}`
+        displayError.textContent = `Error: ${error.message}`;
+        displayTemperature.textContent = "";
+        displayHumidity.textContent = "";
+        displayWindSpeed.textContent = "";
+        displayWeather.textContent = "";
       }
 
   }
+
+  async function forCast( latitude, longitude ){
+
+          const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&timezone=auto`;
+    
+          displayTemperature.textContent = "";
+          displayHumidity.textContent = "";
+          displayWindSpeed.textContent = "";
+          displayWeather.textContent = "";
+
+          try{
+            const response = await fetch(url);
+
+            if(!response.ok){
+              throw new Error(`HTTP Error: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            displayTemperature.textContent = `Temperature: ${Math.round(data.current.temperature_2m)}\u00B0C`;
+            displayHumidity.textContent = `Humidity: ${data.current.relative_humidity_2m}%`;
+            displayWindSpeed.textContent = `Wind Speed: ${data.current.wind_speed_10m}km/h`;
+            const code =  data.current.weather_code
+
+            const description = getWeatherDescription(code);
+            displayWeather.textContent = description; 
+
+            errorMessage.textContent = "success!"
+            errorMessage.style.color = "green"
+
+          }
+          catch(error){
+            console.log(error);
+            errorMessage.textContent = "Failed to load weather!";
+            errorMessage.style.color = "red";
+          }
+          
+
+  }
+
+  function getWeatherDescription(code) {
+    if(code === 0){
+      return `Clear sky`
+    }
+    else if(code === 1){
+       return `Mainly clear`
+    }
+    else if(code === 2){
+       return `Partly cloudy`
+    }
+    else if(code === 3){
+       return `Overcast`
+    }
+    else if(code === 61){
+       return `Slight rain`
+    }
+    else if(code === 63){
+       return `Moderate rain`
+    }
+    else if(code === 65){
+       return `Heavy rain`
+    }
+    else if(code === 95){
+       return `Thunderstorm`
+    }else{
+        return "Unknown weather condition"
+    }
+}
+
+userInput.addEventListener("keydown", (event)=>{
+
+  const inputCity = userInput.value.trim()
+
+  if(event.key === "Enter"){
+    
+    if(inputCity === ""){
+      errorMessage.textContent="Input is empty"
+      errorMessage.style.color = "red"
+      return;
+    }
+    
+    geographical(inputCity);
+
+  }
+})
+
   
   
 </script>
