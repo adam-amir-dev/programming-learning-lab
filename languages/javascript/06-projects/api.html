@@ -29,6 +29,7 @@
       <p id="displayTemperature"></p>
       <p id="displayHumidity"></p>
       <p id="displayWindSpeed"></p>
+      <p id="displayWindTime"></p>
       <p id="displayWeather"></p>
     </div>
 
@@ -56,6 +57,7 @@
     font-size: 1em;
     padding: 10px 20px;
     border-radius: 20px;
+    cursor: pointer;
   }
   .messageSection{
     display: flex;
@@ -88,7 +90,15 @@
   const displayTemperature = document.querySelector("#displayTemperature");
   const displayHumidity = document.querySelector("#displayHumidity");
   const displayWindSpeed = document.querySelector("#displayWindSpeed");
+  const displayTime = document.querySelector("#displayWindTime");
   const displayWeather = document.querySelector("#displayWeather");
+  
+  const lastCity = localStorage.getItem("lastCity");
+
+  if (lastCity) {
+    geographical(lastCity);
+  }
+
   
   submitButton.addEventListener("click",  ()=>{
     
@@ -101,7 +111,6 @@
     }
     
     geographical(inputCity);
-    
     
   })
   
@@ -128,6 +137,7 @@
         if (!data.results || data.results.length === 0) {
           throw new Error("City not found");
         }
+
         
 
         const cityName = data.results[0].name;
@@ -139,10 +149,12 @@
         displayCountry.textContent = `Country: ${country}`
         displayLatitude.textContent = `Latitute: ${latitude}`
         displayLongtitude.textContent = `Longtitude: ${longitude}`
+        
+        await forCast(latitude, longitude);
+
+        localStorage.setItem("lastCity", cityName);
 
         userInput.value = "";
-
-        await forCast(latitude, longitude);
 
       }
       catch(error){
@@ -161,41 +173,33 @@
 
   async function forCast( latitude, longitude ){
 
-          const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&timezone=auto`;
-    
-          displayTemperature.textContent = "";
-          displayHumidity.textContent = "";
-          displayWindSpeed.textContent = "";
-          displayWeather.textContent = "";
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&timezone=auto`;
 
-          try{
-            const response = await fetch(url);
+    displayTemperature.textContent = "";
+    displayHumidity.textContent = "";
+    displayWindSpeed.textContent = "";
+    displayWeather.textContent = "";
 
-            if(!response.ok){
-              throw new Error(`HTTP Error: ${response.status}`);
-            }
+    const response = await fetch(url);
 
-            const data = await response.json();
+    if(!response.ok){
+      throw new Error(`HTTP Error: ${response.status}`);
+    }
 
-            displayTemperature.textContent = `Temperature: ${Math.round(data.current.temperature_2m)}\u00B0C`;
-            displayHumidity.textContent = `Humidity: ${data.current.relative_humidity_2m}%`;
-            displayWindSpeed.textContent = `Wind Speed: ${data.current.wind_speed_10m}km/h`;
-            const code =  data.current.weather_code
+    const data = await response.json();
 
-            const description = getWeatherDescription(code);
-            displayWeather.textContent = description; 
+    displayTemperature.textContent = `Temperature: ${Math.round(data.current.temperature_2m)}\u00B0C`;
+    displayHumidity.textContent = `Humidity: ${data.current.relative_humidity_2m}%`;
+    displayTime.textContent = `Time: ${data.current.time}`;
+    displayWindSpeed.textContent = `Wind Speed: ${data.current.wind_speed_10m}km/h`;
+    const code =  data.current.weather_code
 
-            errorMessage.textContent = "success!"
-            errorMessage.style.color = "green"
+    const description = getWeatherDescription(code);
+    displayWeather.textContent = description; 
 
-          }
-          catch(error){
-            console.log(error);
-            errorMessage.textContent = "Failed to load weather!";
-            errorMessage.style.color = "red";
-          }
-          
-
+    errorMessage.textContent = "success!"
+    errorMessage.style.color = "green"
+      
   }
 
   function getWeatherDescription(code) {
@@ -243,6 +247,8 @@ userInput.addEventListener("keydown", (event)=>{
 
   }
 })
+
+
 
   
   
