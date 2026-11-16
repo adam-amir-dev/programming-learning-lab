@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <main>
+        <div class="calculator">
+            <div class="display">
+                <p id="message">0</p>
+            </div>
+            <div class="input">
+                <div class="inputContainer">
+                    <button id="removeButton" class="topButton">rm</button>
+                    <button id="cleanButton" class="topButton">AC</button>
+                    <button id="percentButton" class="topButton">%</button>
+                    <button id="divideButton" class="endButton">/</button>
+                    <button id="sevenButton">7</button>
+                    <button id="eightButton">8</button>
+                    <button id="nineButton">9</button>
+                    <button id="multiplyButton" class="endButton">x</button>
+                    <button id="fourButton">4</button>
+                    <button id="fiveButton">5</button>
+                    <button id="sixButton">6</button>
+                    <button id="minusButton" class="endButton">-</button>
+                    <button id="oneButton">1</button>
+                    <button id="twoButton">2</button>
+                    <button id="threeButton">3</button>
+                    <button id="plusButton" class="endButton">+</button>
+                    <button id="fractionButton">+ / -</button>
+                    <button id="zeroButton">0</button>
+                    <button id="doteButton">.</button>
+                    <button id="equalButton" class="endButton">=</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+<style>
+    body{
+        margin: 0;
+        background-color: rgb(245, 241, 241);
+    }
+    main{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+    .calculator{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        border: solid 1px;
+        min-height: 75vh;
+        width: 50vh;
+    }
+    .display{
+        background-color: black;
+        width: 100%;
+        height: 20vh;
+        display: flex;
+        align-items: end;
+        justify-content: end;
+    }
+    .display p{
+        color: white;
+        font-size: 2.5em;
+        font-weight: 400;
+        margin: 10px;
+    }
+    .input{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 600px;
+        flex: 1;
+        background-color: black;
+    }
+    .inputContainer{
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 3px;
+
+    }
+    button{
+        height: 70px;
+        width: 70px;
+        border: 1px solid rgb(114, 113, 113);
+        background-color: rgb(54, 52, 52);
+        color: rgb(230, 226, 226);
+        font-size: 1.3em;
+        border-radius: 40px;
+        margin: 2px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    button:hover{
+        background-color: rgb(36, 34, 34);
+        border: solid 1px rgb(36, 34, 34);
+    }
+    .topButton{
+        background-color: rgb(95, 91, 91);
+    }
+    .topButton:hover{
+        background-color: rgb(136, 132, 132);
+
+    }
+    .endButton{
+        background-color: rgb(236, 157, 10);
+    }
+    .endButton:hover{
+        background-color: rgb(207, 140, 16);
+    }
+
+</style>
+
+<script>
+    const removeButton = document.querySelector("#removeButton");
+    const cleanButton = document.querySelector("#cleanButton");
+    const percentButton = document.querySelector("#percentButton");
+    const divideButton = document.querySelector("#divideButton");
+    const sevenButton = document.querySelector("#sevenButton");
+    const eightButton = document.querySelector("#eightButton");
+    const nineButton = document.querySelector("#nineButton");
+    const multiplyButton = document.querySelector("#multiplyButton");
+    const fourButton = document.querySelector("#fourButton");
+    const fiveButton = document.querySelector("#fiveButton");
+    const sixButton = document.querySelector("#sixButton");
+    const minusButton = document.querySelector("#minusButton");
+    const oneButton = document.querySelector("#oneButton");
+    const twoButton = document.querySelector("#twoButton");
+    const threeButton = document.querySelector("#threeButton");
+    const plusButton = document.querySelector("#plusButton");
+    const fractionButton = document.querySelector("#fractionButton");
+    const zeroButton = document.querySelector("#zeroButton");
+    const doteButton = document.querySelector("#doteButton");
+    const equalButton = document.querySelector("#equalButton");
+    const buttons = document.querySelectorAll('button');
+    const message = document.querySelector("#message");
+
+
+    buttons.forEach((button)=>{
+        button.addEventListener("click",()=>{
+
+            let display = button.textContent
+
+            if(button.textContent === "AC"){
+                display = ""
+            }
+            message.textContent = Number(display);
+        })
+    })
+
+</script>
+</html>
