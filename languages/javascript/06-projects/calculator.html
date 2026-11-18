@@ -149,18 +149,36 @@
     const buttons = document.querySelectorAll('button');
     const message = document.querySelector("#message");
 
+    const input = [];
+    let clickedButton;
 
     buttons.forEach((button)=>{
+
         button.addEventListener("click",()=>{
 
-            let display = button.textContent
-
-            if(button.textContent === "AC"){
-                display = ""
+            let userInput = button.textContent
+            let screenDisplay;
+            
+            if(userInput === "%" ||
+               userInput === "rm"
+            ){
+                userInput = ""
+            }else if( userInput === "AC" ){
+                userInput = "0"
             }
-            message.textContent = Number(display);
+
+
+            screenDisplay = userInput
+
+            input.push(screenDisplay);
+            message.textContent = input;
+
+            console.log(input)
+            console.log(input.length)
+
+    
         })
     })
-
+    
 </script>
 </html>
