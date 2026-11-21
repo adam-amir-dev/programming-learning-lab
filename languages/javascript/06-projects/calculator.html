@@ -154,13 +154,15 @@
     const buttons = document.querySelectorAll('button');
     const message = document.querySelector("#message");
 
-    const input = [];
+    const firstInput = [];
+    const secondInput = [];
     let clickedButton;
+    let number;
+    let operator;
 
     buttons.forEach((button)=>{
         
-        let numbers;
-        let operators;
+        
 
         button.addEventListener("click",()=>{
 
@@ -168,19 +170,26 @@
             let screenDisplay;
             
             screenDisplay = userInput
-            input.push(screenDisplay);
                
-            
-            if(Number.isNaN(Number(userInput))){
-                numbers = userInput;
-                console.log("Not a number")
+            if(userInput === "AC" || userInput === "rm" 
+                || userInput === "%" || userInput === "="
+                || userInput === "+ / -" || userInput === "."){
+                    console.log("Assign")
+            }
+            else if(Number.isNaN(Number(userInput))){
+                operator = userInput;
+                input.push(screenDisplay);  
+                console.log("Operator")
             }else if(!Number.isNaN(Number(userInput))){
-                operators = userInput;
+                number = userInput;
+                input.push(screenDisplay);
                 console.log("Number")
-
             }
 
+            message.textContent = input.join("");
+
             console.log(input.join(""))
+            console.log(input)
             console.log(Number.isNaN(Number(userInput)))
      
         })
