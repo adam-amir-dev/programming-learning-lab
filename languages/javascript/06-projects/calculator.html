@@ -122,6 +122,11 @@
     .endButton:hover{
         background-color: rgb(207, 140, 16);
     }
+    #message{
+        font-size: 3.1em;
+        letter-spacing: 1px;
+        
+    }
 
 </style>
 
@@ -153,31 +158,34 @@
     let clickedButton;
 
     buttons.forEach((button)=>{
+        
+        let numbers;
+        let operators;
 
         button.addEventListener("click",()=>{
 
             let userInput = button.textContent
             let screenDisplay;
             
-            if(userInput === "%" ||
-               userInput === "rm"
-            ){
-                userInput = ""
-            }else if( userInput === "AC" ){
-                userInput = "0"
+            screenDisplay = userInput
+            input.push(screenDisplay);
+               
+            
+            if(Number.isNaN(Number(userInput))){
+                numbers = userInput;
+                console.log("Not a number")
+            }else if(!Number.isNaN(Number(userInput))){
+                operators = userInput;
+                console.log("Number")
+
             }
 
-
-            screenDisplay = userInput
-
-            input.push(screenDisplay);
-            message.textContent = input.join("");
-
             console.log(input.join(""))
-            console.log(Number(screenDisplay))
+            console.log(Number.isNaN(Number(userInput)))
      
         })
     })
+
 
     
 </script>
