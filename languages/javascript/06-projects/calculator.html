@@ -156,14 +156,14 @@
 
     const firstInput = [];
     const secondInput = [];
+    let digit;
     let clickedButton;
     let number;
     let operator;
+    let displayOperator;
 
     buttons.forEach((button)=>{
         
-        
-
         button.addEventListener("click",()=>{
 
             let userInput = button.textContent
@@ -171,26 +171,47 @@
             
             screenDisplay = userInput
                
-            if(userInput === "AC" || userInput === "rm" 
-                || userInput === "%" || userInput === "="
-                || userInput === "+ / -" || userInput === "."){
-                    console.log("Assign")
+            if( 
+                userInput === "AC" ||
+                userInput === "rm" ||
+                userInput === "%" ||
+                userInput === "="|| 
+                userInput === "+ / -" || 
+                userInput === "."
+            ){
+                console.log("Assign")
+            }
+            else if(!Number.isNaN(Number(userInput))){
+                    number = userInput;
+                if (operator === undefined) {
+                    firstInput.push(userInput);
+                } else {
+                    secondInput.push(userInput);
+                }
+                    console.log("Number")
             }
             else if(Number.isNaN(Number(userInput))){
+
                 operator = userInput;
-                input.push(screenDisplay);  
                 console.log("Operator")
-            }else if(!Number.isNaN(Number(userInput))){
-                number = userInput;
-                input.push(screenDisplay);
-                console.log("Number")
+
             }
 
-            message.textContent = input.join("");
+            if(operator === undefined){
+                displayOperator = ""
+            }   
+            else{
+                displayOperator = operator
+            }
 
-            console.log(input.join(""))
-            console.log(input)
-            console.log(Number.isNaN(Number(userInput)))
+            message.textContent = firstInput.join("") + displayOperator + secondInput.join("")
+
+
+
+            console.log(firstInput)
+            console.log(secondInput)
+            console.log(operator)
+            
      
         })
     })
