@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Calculator</title>
 </head>
 <body>
     <main>
@@ -154,13 +154,16 @@
     const buttons = document.querySelectorAll('button');
     const message = document.querySelector("#message");
 
-    const firstInput = [];
-    const secondInput = [];
+    let firstInput = [];
+    let secondInput = [];
     let digit;
     let clickedButton;
     let number;
     let operator;
     let displayOperator;
+    let total;
+    let firstValue;
+    let secondValue;
 
     buttons.forEach((button)=>{
         
@@ -204,7 +207,38 @@
                 displayOperator = operator
             }
 
-            message.textContent = firstInput.join("") + displayOperator + secondInput.join("")
+            message.textContent = firstInput.join("") + displayOperator + secondInput.join("");
+
+            if(userInput === "="){
+                if(displayOperator === "+"){ 
+                    firstValue =  Number(firstInput.join(""));
+                    secondValue = Number(secondInput.join(""));
+                    total = firstValue + secondValue
+                    message.textContent = total;
+                }
+                else if(displayOperator === "-"){
+                    firstValue =  Number(firstInput.join(""));
+                    secondValue = Number(secondInput.join(""));
+                    total = firstValue - secondValue
+                    message.textContent = total;
+                }
+                else if(displayOperator === "x"){
+                    firstValue =  Number(firstInput.join(""));
+                    secondValue = Number(secondInput.join(""));
+                    total = firstValue * secondValue
+                    message.textContent = total;
+                }
+                else if(displayOperator === "/"){
+                    firstValue =  Number(firstInput.join(""));
+                    secondValue = Number(secondInput.join(""));
+                    total = firstValue / secondValue
+                    message.textContent = total;
+                }
+
+                firstInput = [total]
+                secondInput = []
+                console.log(total)
+            }
 
 
 
