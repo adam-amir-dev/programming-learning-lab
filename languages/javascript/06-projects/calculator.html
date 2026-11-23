@@ -118,6 +118,7 @@
     }
     .endButton{
         background-color: rgb(236, 157, 10);
+        font-size: 1.8em;
     }
     .endButton:hover{
         background-color: rgb(207, 140, 16);
@@ -173,39 +174,64 @@
             let screenDisplay;
             
             screenDisplay = userInput
-               
+        
             if( 
-                userInput === "AC" ||
-                userInput === "rm" ||
-                userInput === "%" ||
-                userInput === "="|| 
-                userInput === "+ / -" || 
-                userInput === "."
+                userInput === "=" || 
+                userInput === "+ / -"
             ){
                 console.log("Assign")
             }
             else if(!Number.isNaN(Number(userInput))){
-                    number = userInput;
+                number = userInput;
                 if (operator === undefined) {
                     firstInput.push(userInput);
+                    displayOperator = "";
                 } else {
                     secondInput.push(userInput);
                 }
-                    console.log("Number")
+                console.log("Number")
+            }
+            else if(Number.isNaN(Number(userInput)) && userInput === "%"){
+                displayOperator = "%";
+            }
+             else if(Number.isNaN(Number(userInput)) && userInput === "rm"){
+                if(operator === undefined){
+                    firstInput.pop()
+                }
+                else{
+                    secondInput.pop()
+                }
+            }
+            else if(Number.isNaN(Number(userInput)) && userInput === "."){
+                if(operator === undefined){
+                    if(firstInput.includes(".")){
+                        firstInput.push("")
+                        console.log("contain")
+                    }
+                    else{
+                        firstInput.push(".")
+                    }
+                
+                }
+                else{
+                        if(secondInput.includes(".")){
+                            secondInput.push("")
+                            console.log("contain")
+                        }
+                        else{
+                            secondInput.push(".")
+                        }
+                    }
             }
             else if(Number.isNaN(Number(userInput))){
-
+                
                 operator = userInput;
+                displayOperator = operator;
                 console.log("Operator")
-
             }
+            
 
-            if(operator === undefined){
-                displayOperator = ""
-            }   
-            else{
-                displayOperator = operator
-            }
+            console.log(displayOperator)
 
             message.textContent = firstInput.join("") + displayOperator + secondInput.join("");
 
@@ -234,18 +260,29 @@
                     total = firstValue / secondValue
                     message.textContent = total;
                 }
+                else if(displayOperator === "%"){
+                    total = Number(firstInput.join(""))/100;
+                    message.textContent = total
+                    console.log("Hello")
+                }
 
                 firstInput = [total]
                 secondInput = []
                 console.log(total)
             }
 
+            if(userInput === "AC"){
+                firstInput = []
+                secondInput = []
+                operator = undefined;
+                total = undefined;
+                message.textContent = 0
+            }
 
-
+            console.log(displayOperator)
             console.log(firstInput)
             console.log(secondInput)
             console.log(operator)
-            
      
         })
     })
