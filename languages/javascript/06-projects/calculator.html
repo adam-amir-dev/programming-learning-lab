@@ -155,6 +155,7 @@
     const buttons = document.querySelectorAll('button');
     const message = document.querySelector("#message");
 
+    let total;
     let firstInput = [];
     let secondInput = [];
     let digit;
@@ -162,7 +163,6 @@
     let number;
     let operator;
     let displayOperator;
-    let total;
     let firstValue;
     let secondValue;
 
@@ -188,7 +188,7 @@
                 }
                 console.log("Number")
             }
-             else if(Number.isNaN(Number(userInput)) && userInput === "rm"){
+            else if(Number.isNaN(Number(userInput)) && userInput === "rm"){
                 if(operator === undefined){
                     firstInput.pop()
                 }
@@ -229,6 +229,14 @@
                 console.log("Operator")
             }
 
+            if(firstInput.join("") === ""){
+                firstInput = [0]
+                firstInput.join("");
+
+                message.textContent = firstInput.join("") + displayOperator + secondInput.join("");
+            }
+
+
             message.textContent = firstInput.join("") + displayOperator + secondInput.join("");
 
             if(userInput === "+ / -"){
@@ -240,11 +248,17 @@
                     firstInput = [Number(firstInput.join("")) * -1]
                 }
                 console.log(Number(firstInput.join("")))
-                console.log("clicked")
                     
                 message.textContent = firstInput.join("") + displayOperator + secondInput.join("");
             }
             if(userInput === "="){
+                
+                if(firstValue === undefined){
+                    firstValue =  Number(0);
+                    secondValue = Number(secondInput.join(""));
+                    total = firstValue + secondValue
+                    message.textContent = total;
+                }
                 if(displayOperator === "+"){ 
                     firstValue =  Number(firstInput.join(""));
                     secondValue = Number(secondInput.join(""));
@@ -290,7 +304,7 @@
 
                 firstInput = [total]
                 secondInput = []
-                console.log(total)
+                console.log(firstInput)
             }
 
             if(userInput === "AC"){
@@ -302,6 +316,16 @@
                 message.textContent = 0
             }
 
+            
+            if(total === Infinity){
+                firstInput = []
+                secondInput = []
+                operator = undefined;
+                total = undefined;
+                displayOperator = "";
+                message.textContent = 0
+            }
+        
             console.log(displayOperator)
             console.log(firstInput)
             console.log(secondInput)
