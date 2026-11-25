@@ -309,10 +309,27 @@
                         }
                     }
                 }
+                if(total === -Infinity){
+                    firstInput = []
+                    secondInput = []
+                    operator = undefined;
+                    total = undefined;
+                    displayOperator = "";
+                    message.textContent = 0
+                }
+
+                if(isNaN(total)){
+                    firstInput = []
+                    secondInput = []
+                    operator = undefined;
+                    total = undefined;
+                    displayOperator = "";
+                    message.textContent = 0
+                }
 
                 firstInput = [total]
                 secondInput = []
-                console.log(firstInput)
+                console.log(total)
                 operator = undefined;
                 displayOperator = "";
             }
