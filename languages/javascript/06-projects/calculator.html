@@ -58,7 +58,7 @@
         justify-content: start;
         border: solid 1px;
         min-height: 75vh;
-        width: 50vh;
+        width: 55vh;
     }
     .display{
         background-color: black;
@@ -229,18 +229,6 @@
                 displayOperator = operator;
             }
 
-
-            if(firstInput.join("") === ""){
-                firstInput = [0]
-                firstInput.join("");
-
-                message.textContent = firstInput.join("") + displayOperator + secondInput.join("");
-            }
-            
-            
-            message.textContent = firstInput.join("") + displayOperator + secondInput.join("");
-
-
             if(userInput === "+ / -"){
                 displayOperator = "";
                 if(Number(firstInput.join(""))>0){
@@ -253,6 +241,7 @@
                     
                 message.textContent = firstInput.join("") + displayOperator + secondInput.join("");
             }
+
             if(userInput === "="){
                 
                 if(firstValue === undefined){
@@ -312,6 +301,7 @@
                 if(total === -Infinity){
                     firstInput = []
                     secondInput = []
+                    thirdInput = []
                     operator = undefined;
                     total = undefined;
                     displayOperator = "";
@@ -321,6 +311,7 @@
                 if(isNaN(total)){
                     firstInput = []
                     secondInput = []
+                    thirdInput = []
                     operator = undefined;
                     total = undefined;
                     displayOperator = "";
@@ -329,6 +320,7 @@
 
                 firstInput = [total]
                 secondInput = []
+                thirdInput = [total]
                 console.log(total)
                 operator = undefined;
                 displayOperator = "";
@@ -337,6 +329,7 @@
             if(userInput === "AC"){
                 firstInput = []
                 secondInput = []
+                thirdInput = []
                 operator = undefined;
                 total = undefined;
                 displayOperator = "";
@@ -347,11 +340,47 @@
             if(total === Infinity){
                 firstInput = []
                 secondInput = []
+                thirdInput = []
                 operator = undefined;
                 total = undefined;
                 displayOperator = "";
                 message.textContent = 0
             }
+
+            
+            if(secondInput !== ""){
+                if(userInput === "+"){
+                    total = Number(firstInput.join("")) + Number(secondInput.join(""));
+                }
+                else if(userInput === "-"){
+                    total = Number(firstInput.join("")) - Number(secondInput.join(""));
+                }
+                else if(userInput === "x"){
+                    total = Number(firstInput.join("")) * Number(secondInput.join(""));
+                }
+                else if(userInput === "/"){
+                    total = Number(firstInput.join("")) / Number(secondInput.join(""));
+                }
+                console.log(total)
+                
+            }
+
+            
+            if(firstInput.join("") === ""){
+                firstInput = [0]
+                firstInput.join("");
+
+                message.textContent = firstInput.join("") + displayOperator + secondInput.join("");
+            }
+            
+            message.textContent = firstInput.join("") + displayOperator + secondInput.join("");
+
+            console.log(total)
+            console.log(firstInput)
+            console.log(operator)
+            console.log(secondInput)
+            
+
         })
     })
 
